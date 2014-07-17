@@ -1,0 +1,12 @@
+classes
+target
+bin
+gen
+.settings
+
+# Logs #
+######################
+*.log
+*.classpath
+
+*.project
