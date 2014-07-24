@@ -74,13 +74,13 @@ public class GPSSession implements GPSObject {
 	private boolean validate(GPSObject input) {
 
 		boolean isValid = false;
-		log.log(Level.INFO, "validating {0}", input.toString());
+		log.log(Level.INFO, "validating input {0}", input.toString());
 		if (input instanceof GPSDataIntegrity) {
 			isValid = ((GPSDataIntegrity) input).checkIntegrity();
 		}else{
 			log.log(Level.WARNING, "input {0} doesn't implement {1}", new Object[]{input.toString(), GPSDataIntegrity.class.getName()});
 		}
-		log.log(Level.INFO, "validate {0} \n", isValid);
+		log.log(Level.INFO, "validation result {0} \n", isValid);
 		return isValid;
 	}
 

@@ -45,6 +45,25 @@ public class RMC implements GPSObject, GPSDataIntegrity {
 
 		// return false;
 	}
+	
+	
+	
+	
+
+	@Override
+	public String toString() {
+		return "RMC [timestamp=" + timestamp + ", status=" + status + ", lat="
+				+ lat + ", latDirection=" + latDirection + ", lon=" + lon
+				+ ", lonDirection=" + lonDirection + ", groundSpeedInKnots="
+				+ groundSpeedInKnots + ", trackAngle=" + trackAngle + ", date="
+				+ date + ", magnaticVariation=" + magnaticVariation
+				+ ", magnaticVariationDirection=" + magnaticVariationDirection
+				+ ", signalIntegrity=" + signalIntegrity + "]";
+	}
+
+
+
+
 
 	public static char getDefaultChar() {
 		return DEFAULT_CHAR;

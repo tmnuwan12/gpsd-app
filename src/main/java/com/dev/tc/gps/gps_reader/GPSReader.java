@@ -50,9 +50,15 @@ public class GPSReader extends Thread implements SerialPortEventListener {
                     serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8,
                             SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
                     
-                /*    serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT);
+                   // serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT);
                     
-                    serialPort.setRTS(true);*/
+                   // serialPort.setRTS(true);
+                    
+                  //  serialPort.disableReceiveTimeout();
+                   // serialPort.enableReceiveThreshold(1);
+                    
+                    serialPort.enableReceiveTimeout(1000);
+                    serialPort.enableReceiveThreshold(0);
                     
                     Thread.sleep(getPortScanTime());
                 } catch (PortInUseException e) {
