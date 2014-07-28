@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.dev.tc.gps.client.contract.Protocol;
 import com.dev.tc.gps.client.parser.NMEA0183;
@@ -27,6 +29,10 @@ import gnu.io.SerialPortEventListener;
  */
 public class GPSDataListener implements SerialPortEventListener {
 
+	private static final Logger log = Logger.getLogger(GPSDataListener.class
+			.getName());
+
+	
 	private InputStream iStream;
 	private Mutex mutex;
 	private Protocol protocol = new NMEA0183();
@@ -75,12 +81,15 @@ public class GPSDataListener implements SerialPortEventListener {
 						*/
 						String ln = buffReader.readLine();
 						if (ln != null) {
-							System.out.print("line received > : " + ln + "\n");
-							// handle(ln);
+							//System.out.print("line received > : " + ln + "\n");
+							
+							log.log(Level.FINER, "line received > : {0}", ln);
+							handle(ln);
 						}
 
 					} else {
-						System.out.print("buff reader not ready");
+						//System.out.print("buff reader not ready");
+						log.log(Level.WARNING, "buff reader not ready");
 					}
 
 					getMutex().notify();
@@ -101,8 +110,10 @@ public class GPSDataListener implements SerialPortEventListener {
 
 		} else {
 
-			System.out
-					.println("serial event is not DATA_AVAILABLE and iSteam is not null");
+			/*System.out
+					.println("serial event is not DATA_AVAILABLE and iSteam is not null");*/
+			
+			log.log(Level.WARNING, "serial event is not DATA_AVAILABLE and iSteam is not null");
 		}
 	}
 

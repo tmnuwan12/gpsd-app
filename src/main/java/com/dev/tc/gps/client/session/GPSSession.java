@@ -74,13 +74,13 @@ public class GPSSession implements GPSObject {
 	private boolean validate(GPSObject input) {
 
 		boolean isValid = false;
-		log.log(Level.INFO, "validating input {0}", input.toString());
+		log.log(Level.FINER, "validating input {0}", input.toString());
 		if (input instanceof GPSDataIntegrity) {
 			isValid = ((GPSDataIntegrity) input).checkIntegrity();
 		}else{
-			log.log(Level.WARNING, "input {0} doesn't implement {1}", new Object[]{input.toString(), GPSDataIntegrity.class.getName()});
+			log.log(Level.WARNING, "input {0} do not implement {1}", new Object[]{input.toString(), GPSDataIntegrity.class.getName()});
 		}
-		log.log(Level.INFO, "validation result {0} \n", isValid);
+		log.log(Level.FINER, "validation result {0} \n", isValid);
 		return isValid;
 	}
 
@@ -98,7 +98,7 @@ public class GPSSession implements GPSObject {
 				gpsData.add(getGsa());
 				gpsData.add(getGsv());
 				gpsData.add(getRmc());
-				log.log(Level.INFO, "broadcasting now");
+				log.log(Level.FINER, "broadcasting now");
 				broadcaster.broadcast(gpsData);
 			} else {
 				log.log(Level.WARNING,

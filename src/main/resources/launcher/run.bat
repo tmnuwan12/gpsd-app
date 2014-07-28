@@ -1,0 +1,1 @@
+java -Djava.util.logging.config.file="log.config" -jar  gps-reader-0.0.1-SNAPSHOT.jar
