@@ -11,8 +11,18 @@
 				<include>**/*.jar</include>
 				<include>**/*.bat</include>
 				<include>**/*.exe</include>
+
 			</includes>
 		</fileSet>
+
+		<fileSet>
+			<directory>${basedir}/src/main/resources</directory>
+			<outputDirectory/>
+			<includes>
+				<include>**/*.dll</include>
+			</includes>
+		</fileSet>
+
 	</fileSets>
 	<files>
 
@@ -23,14 +33,14 @@
 			<source>${basedir}/src/main/resources/launcher/run.bat</source>
 		</file>
 	</files>
-	
+
 	<dependencySets>
-    <dependencySet>
-      <outputDirectory>/lib</outputDirectory>
-      <includes>
-        <include>org.bidib.jbidib.org.qbang.rxtx:rxtxcomm</include>
-        <include>de.taimos:gpsd4java</include>
-      </includes>
-    </dependencySet>
-  </dependencySets>
+		<dependencySet>
+			<outputDirectory>/lib</outputDirectory>
+			<includes>
+				<include>org.bidib.jbidib.org.qbang.rxtx:rxtxcomm</include>
+				<include>de.taimos:gpsd4java</include>
+			</includes>
+		</dependencySet>
+	</dependencySets>
 </assembly>
