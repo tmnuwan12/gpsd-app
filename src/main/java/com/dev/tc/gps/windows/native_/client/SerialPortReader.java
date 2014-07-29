@@ -155,6 +155,7 @@ public class SerialPortReader extends Thread {
 	public static void main(String[] args) {
 		SerialPortReader reader = new SerialPortReader();
 		//Logger.getLogger("com.dev.tc.gps.windows.native_.client").setFilter(new LogFilter());
+		log.log(Level.INFO, "start listening for gps data");
 		GPSBroadcaster.instance().subscribe(new Observer() {
 
 			@Override
