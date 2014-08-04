@@ -18,10 +18,8 @@ import org.json.JSONObject;
 
 import com.dev.tc.gps.client.contract.GPSObject;
 import com.dev.tc.gps.client.contract.Protocol;
-import com.dev.tc.gps.client.parser.NMEA0183;
 import com.dev.tc.gps.client.types.CMDResponse;
 
-import de.taimos.gpsd4java.backend.AbstractResultParser;
 import de.taimos.gpsd4java.types.IGPSObject;
 import de.taimos.gpsd4java.types.ParseException;
 import de.taimos.gpsd4java.types.VersionObject;

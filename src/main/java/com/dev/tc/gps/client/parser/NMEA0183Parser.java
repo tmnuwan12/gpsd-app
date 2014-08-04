@@ -4,14 +4,8 @@
 package com.dev.tc.gps.client.parser;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.dev.tc.gps.client.contract.GPSObject;
-import com.dev.tc.gps.client.types.CMDResponse;
 
 /**
  * 

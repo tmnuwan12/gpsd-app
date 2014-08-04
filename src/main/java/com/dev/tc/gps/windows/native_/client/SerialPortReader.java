@@ -13,7 +13,10 @@ import java.util.logging.Logger;
 import com.dev.tc.gps.client.contract.GPSObject;
 import com.dev.tc.gps.client.notification.GPSBroadcaster;
 import com.dev.tc.gps.client.notification.Observer;
+import com.dev.tc.gps.windows.native_.client.listener.GPSDataListener;
+
 import gnu.io.CommPortIdentifier;
+import gnu.io.CommPortOwnershipListener;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
@@ -41,7 +44,7 @@ public class SerialPortReader extends Thread {
 	private Mutex mutex = new Mutex();
 
 	/**
-	 * Scan for srial ports and
+	 * Scan for serial ports and
 	 */
 	public void doPortScan() {
 
@@ -54,14 +57,17 @@ public class SerialPortReader extends Thread {
 					&& port.getPortType() == CommPortIdentifier.PORT_SERIAL) {
 
 				SerialPort sPort = null;
+				CommPortOwnershipListener portOwnerShipListenr = new com.dev.tc.gps.windows.native_.client.listener.CommPortOwnershipListener();
 				try {
 					log.log(Level.WARNING, "tyring to open port {0}", port.getName());
 					
+					port.addPortOwnershipListener(portOwnerShipListenr);
 					sPort = (SerialPort) port.open(OWNER, BLOCKING_TIME_MS);
 
 					if (sPort != null) {
 
 						GPSDataListener gpsListener = new GPSDataListener();
+						
 						sPort.addEventListener(gpsListener);
 						gpsListener.setInputStream(sPort.getInputStream());
 						gpsListener.setMutex(getMutex());
@@ -102,6 +108,7 @@ public class SerialPortReader extends Thread {
 								sPort.getInputStream().close();
 
 							}
+							port.removePortOwnershipListener(portOwnerShipListenr);
 							sPort.removeEventListener();
 							sPort.close();
 						}
@@ -184,11 +191,4 @@ public class SerialPortReader extends Thread {
 
 		reader.start();
 	}
-	
-/*	private void configLog(){
-		ConsoleHandler cHandler = new ConsoleHandler();
-		cHandler.setFilter(new LogFilter());
-		
-	}*/
-
 }
