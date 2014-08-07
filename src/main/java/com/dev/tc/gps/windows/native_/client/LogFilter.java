@@ -28,6 +28,7 @@ public class LogFilter implements Filter {
 			return true;
 		} else {
 			return false;
+			//return true;
 		}
 	}
 

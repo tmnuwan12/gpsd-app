@@ -92,12 +92,16 @@ public class GPSDataListener implements SerialPortEventListener {
 						log.log(Level.WARNING, "buff reader not ready");
 					}
 
+					//Thread.sleep(3000);
 					getMutex().notify();
 				}
 
 			} catch (IOException e) {
 				e.printStackTrace();
-			} finally {
+			}/* catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} */finally {
 				try {
 					buffReader.close();
 					getiStream().close();

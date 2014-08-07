@@ -32,6 +32,10 @@
 		<file>
 			<source>${basedir}/src/main/resources/launcher/run.bat</source>
 		</file>
+		<file>
+			<outputDirectory>/lib</outputDirectory>
+			<source>${basedir}/src/main/resources/lib/registry.jar</source>
+		</file>
 	</files>
 
 	<dependencySets>
@@ -40,6 +44,7 @@
 			<includes>
 				<include>org.bidib.jbidib.org.qbang.rxtx:rxtxcomm</include>
 				<include>de.taimos:gpsd4java</include>
+				<include></include>
 			</includes>
 		</dependencySet>
 	</dependencySets>

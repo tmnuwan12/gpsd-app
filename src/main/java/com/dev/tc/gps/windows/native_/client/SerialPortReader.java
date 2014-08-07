@@ -35,7 +35,7 @@ public class SerialPortReader extends Thread {
 	// private CommPortIdentifier portScanner;
 	private static String OWNER = "APPXPRESS_GPS_CLIENT";
 	private static int BLOCKING_TIME_MS = 2000;
-	//private static int BAUD_RATE = 9600; // bit per second
+	// private static int BAUD_RATE = 9600; // bit per second
 	private static int BAUD_RATE = 4800; // bit per second
 
 	private static int DATA_BITS = 8;
@@ -59,22 +59,23 @@ public class SerialPortReader extends Thread {
 				SerialPort sPort = null;
 				CommPortOwnershipListener portOwnerShipListenr = new com.dev.tc.gps.windows.native_.client.listener.CommPortOwnershipListener();
 				try {
-					log.log(Level.WARNING, "tyring to open port {0}", port.getName());
-					
+					log.log(Level.WARNING, "tyring to open port {0}",
+							port.getName());
+
 					port.addPortOwnershipListener(portOwnerShipListenr);
 					sPort = (SerialPort) port.open(OWNER, BLOCKING_TIME_MS);
 
 					if (sPort != null) {
 
 						GPSDataListener gpsListener = new GPSDataListener();
-						
+
 						sPort.addEventListener(gpsListener);
 						gpsListener.setInputStream(sPort.getInputStream());
 						gpsListener.setMutex(getMutex());
 						sPort.notifyOnDataAvailable(true);
 						sPort.setSerialPortParams(BAUD_RATE, DATA_BITS,
 								STOP_BITS, PARITY_NONE);
-						//GPSCommandCenter.debugDataOff(sPort.getOutputStream());
+						// GPSCommandCenter.debugDataOff(sPort.getOutputStream());
 						synchronized (getMutex()) {
 							getMutex().wait(10000);
 							while (getMutex().isReading) {
@@ -83,8 +84,9 @@ public class SerialPortReader extends Thread {
 						}
 
 					} else {
-						log.log(Level.WARNING, "serial port is null, can't continue");
-						
+						log.log(Level.WARNING,
+								"serial port is null, can't continue");
+
 					}
 				} catch (PortInUseException e) {
 
@@ -123,8 +125,6 @@ public class SerialPortReader extends Thread {
 		}
 	}
 
-
-
 	// TODO: Add ownership change event listeners.
 
 	@Override
@@ -161,7 +161,8 @@ public class SerialPortReader extends Thread {
 
 	public static void main(String[] args) {
 		SerialPortReader reader = new SerialPortReader();
-		//Logger.getLogger("com.dev.tc.gps.windows.native_.client").setFilter(new LogFilter());
+		// Logger.getLogger("com.dev.tc.gps.windows.native_.client").setFilter(new
+		// LogFilter());
 		log.log(Level.INFO, "start listening for gps data");
 		GPSBroadcaster.instance().subscribe(new Observer() {
 
@@ -183,6 +184,7 @@ public class SerialPortReader extends Thread {
 					log.log(Level.INFO,
 							"============== END GPS BEACON====================="
 									+ "\n");
+
 				}
 
 			}

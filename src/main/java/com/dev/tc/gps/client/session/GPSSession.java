@@ -98,6 +98,13 @@ public class GPSSession implements GPSObject {
 				gpsData.add(getGsa());
 				gpsData.add(getGsv());
 				gpsData.add(getRmc());
+				try {
+					//add n sec delay when outputting data in console (only for demos)
+					Thread.sleep(8000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				log.log(Level.FINER, "broadcasting now");
 				broadcaster.broadcast(gpsData);
 			} else {
