@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import com.dev.tc.gps.client.contract.Map;
 import com.dev.tc.gps.client.contract.Protocol;
 import com.dev.tc.gps.client.session.GPSSession;
+import com.dev.tc.gps.client.util.DateTimeUtil;
 
 /**
  * NMEA Sentence
@@ -62,14 +63,14 @@ public class NMEA0183 implements Protocol {
 	 * @return - GPSSession
 	 */
 	public GPSSession getSession() {
-		long now = System.currentTimeMillis();
+		long now = DateTimeUtil.nowUTC();
 		if (GLOBAL_SESSION == null) {
 			GLOBAL_SESSION = new GPSSession();
-		} else if (now - TIMESTAMP >= MAX_ACTIVE_TIME_MS) {
+		} /*else if (now - TIMESTAMP >= MAX_ACTIVE_TIME_MS) {
 
 			log.log(Level.FINE, "created a new gps session, discarded old one");
 			GLOBAL_SESSION = new GPSSession();
-		}
+		}*/
 		TIMESTAMP = now;
 		return GLOBAL_SESSION;
 	}

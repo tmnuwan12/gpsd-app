@@ -10,9 +10,18 @@ import java.util.TooManyListenersException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import sun.security.action.GetLongAction;
+
 import com.dev.tc.gps.client.contract.GPSObject;
+import com.dev.tc.gps.client.notification.DelayMaker;
 import com.dev.tc.gps.client.notification.GPSBroadcaster;
 import com.dev.tc.gps.client.notification.Observer;
+import com.dev.tc.gps.client.observer.Observer2;
+import com.dev.tc.gps.client.types.GGA;
+import com.dev.tc.gps.client.types.GSA;
+import com.dev.tc.gps.client.types.GSV;
+import com.dev.tc.gps.client.types.GSV.GSVSentence;
+import com.dev.tc.gps.client.types.GSV.SpaceVehicle;
 import com.dev.tc.gps.windows.native_.client.listener.GPSDataListener;
 
 import gnu.io.CommPortIdentifier;
@@ -164,32 +173,12 @@ public class SerialPortReader extends Thread {
 		// Logger.getLogger("com.dev.tc.gps.windows.native_.client").setFilter(new
 		// LogFilter());
 		log.log(Level.INFO, "start listening for gps data");
-		GPSBroadcaster.instance().subscribe(new Observer() {
-
-			@Override
-			public void notify_(List<GPSObject> gpsData) {
-
-				if (gpsData != null && !gpsData.isEmpty()) {
-
-					log.log(Level.INFO, "Received GPS data with size {0}",
-							gpsData.size());
-
-					log.log(Level.INFO,
-							"============== BEGIN GPS BEACON====================="
-									+ "\n");
-					for (GPSObject obj : gpsData) {
-
-						log.log(Level.INFO, "{0} \n", obj.toString());
-					}
-					log.log(Level.INFO,
-							"============== END GPS BEACON====================="
-									+ "\n");
-
-				}
-
-			}
-
-		});
+		//System.out.printf("%1$s      %2$s      %3$s      %4$s      %5$s\n", "Time", "Latitude", "Longitude", "Average Number of SVs per Reading", "Average Number of Fixes Reachable");
+		if (args != null && args.length > 0) {
+			// set broadcast delay
+			DelayMaker.BROADCAST_DELAY = Integer.parseInt(args[0]);
+		}
+		GPSBroadcaster.instance().subscribe(new Observer2());
 
 		reader.start();
 	}

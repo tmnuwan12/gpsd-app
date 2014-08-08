@@ -15,7 +15,7 @@ import com.dev.tc.gps.client.contract.GPSObject;
  * current solution and the DOP. DOP (dilution of precision) is an indication of
  * the effect of satellite geometry on the accuracy of the fix. It is a unitless
  * number where smaller is better. For 3D fixes using 4 satellites a 1.0 would
- * be considered to be a perfect number, however for overdetermined solutions it
+ * be considered to be a perfect number, however for over-determined solutions it
  * is possible t.o see numbers below 1.0.
  * 
  * @author NThusitha

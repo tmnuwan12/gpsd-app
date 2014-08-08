@@ -36,18 +36,30 @@
 			<version>1.1.0</version>
 		</dependency>
 
-		<!-- JNA dependency -->
+		<!-- In case string formatting is required, use this util -->
 		<dependency>
-			<groupId>net.java.dev.jna</groupId>
-			<artifactId>jna</artifactId>
-			<version>4.1.0</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.2</version>
 		</dependency>
 
+
+		<!-- JNA dependency -->
+		<!-- <dependency> <groupId>net.java.dev.jna</groupId> <artifactId>jna</artifactId> 
+			<version>4.1.0</version> </dependency> <dependency> <groupId>net.java.dev.jna</groupId> 
+			<artifactId>platform</artifactId> <version>3.5.2</version> </dependency> -->
+
+
+		<!-- Windows Native Registry API dependencies (Importing 3rd party jar 
+			into Maven.) -->
 		<dependency>
-			<groupId>net.java.dev.jna</groupId>
-			<artifactId>platform</artifactId>
-			<version>3.5.2</version>
+			<groupId>com.dev.tc.gps</groupId>
+			<artifactId>win-registry</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/registry.jar</systemPath>
 		</dependency>
+
 
 
 
