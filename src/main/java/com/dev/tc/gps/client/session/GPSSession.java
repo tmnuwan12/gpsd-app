@@ -56,8 +56,9 @@ public class GPSSession implements GPSObject {
 
 		if (input != null) {
 
-			if (validate(input)) {
-
+			if (validate1(input)) {
+				log.log(Level.FINER, "adding data to internal buffer");
+				
 				if (input instanceof GGA) {
 					// this.gga = (GGA) input;
 					GGA_BUFF.add((GGA) input);
@@ -79,16 +80,25 @@ public class GPSSession implements GPSObject {
 			// publish();
 			if (canBroadcast()) {
 				broadcast();
+			}else{
+				log.log(Level.FINER, "can't broadcast yet");
 			}
 		}
 
 	}
 
+	private boolean validate1(GPSObject input){
+		
+		//for now always return true
+		return true;
+	}
+	
 	/**
 	 * Check for data integrity.
 	 * 
 	 * @param input
 	 * @return - true if integrity check passes
+	 * @deprecated
 	 */
 	private boolean validate(GPSObject input) {
 
@@ -114,6 +124,7 @@ public class GPSSession implements GPSObject {
 		boolean goAhead = false;
 		if (LAST_BROADCAST_UTC_TIMESTAMP > 0) {
 			// broadcast with delay.
+			log.log(Level.FINER, "time diff {0} \n", DateTimeUtil.nowUTC() - LAST_BROADCAST_UTC_TIMESTAMP);
 			if ((DateTimeUtil.nowUTC() - LAST_BROADCAST_UTC_TIMESTAMP) >= DelayMaker.BROADCAST_DELAY) {
 				LAST_BROADCAST_UTC_TIMESTAMP = DateTimeUtil.nowUTC();
 				goAhead = true;

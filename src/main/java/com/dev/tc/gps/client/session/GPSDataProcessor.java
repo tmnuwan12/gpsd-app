@@ -29,8 +29,7 @@ public class GPSDataProcessor {
 	public static final String DEFAULT_NORMALIZED_LON = "Unknown";
 	public static final String DEFAULT_NORMALIZED_LAT = "Unknown";
 	public static final String DEAULT_FIXED_QUALITY = "Unknown";
-	
-	
+
 	/**
 	 * @param ggaBuff
 	 * @param gsaBuff
@@ -42,14 +41,13 @@ public class GPSDataProcessor {
 	public static PACKET processData(List<GGA> ggaBuff, List<GSA> gsaBuff,
 			List<GSV> gsvBuff, List<GST> gstBuff, List<RMC> rmcBuff) {
 
-
 		String normalizedLon = DEFAULT_NORMALIZED_LON;
 		String normalizedLat = DEFAULT_NORMALIZED_LAT;
 		// String direction = "N/A"; //ignore changes of direction in given time
 		// period between broadcasted packets
 		String fixQuality = DEAULT_FIXED_QUALITY;
-		int avgNoOfSvsPerReading = 0;
-		int avgNoOfFixesReachable = 0;
+		double avgNoOfSvsPerReading = 0;
+		double avgNoOfFixesReachable = 0;
 
 		if (!ggaBuff.isEmpty()) {
 
@@ -75,13 +73,13 @@ public class GPSDataProcessor {
 					String currentLat = Double.toString(gga.getLat());
 					String currentLon = Double.toString(gga.getLon());
 
-					accumulatedLonDegrees = +getDegrees(currentLon);
-					accumulatedLonMins = +getMinutes(currentLon);
+					accumulatedLonDegrees += getDegrees(currentLon);
+					accumulatedLonMins += getMinutes(currentLon);
 
-					accumulatedLatDegrees = +getDegrees(currentLat);
-					accumulatedLatMins = +getMinutes(currentLat);
+					accumulatedLatDegrees += getDegrees(currentLat);
+					accumulatedLatMins += getMinutes(currentLat);
 
-					totalNoOfSVs = +gga.getNumerOfSatellites();
+					totalNoOfSVs += gga.getNumerOfSatellites();
 
 					ggaCount++;
 				}
@@ -103,28 +101,31 @@ public class GPSDataProcessor {
 			}
 
 		}
-		
-		if(!gsaBuff.isEmpty()){
-			
+
+		if (!gsaBuff.isEmpty()) {
+
 			int totalNoOfFixes = 0;
 			int gsaCount = 0;
-			
-			for(GSA gsa : gsaBuff){
-				
-				if(gsa.getFixVal() > 1){
-					//2D or 3D fix
-					
+
+			for (GSA gsa : gsaBuff) {
+
+				if (gsa.getFixVal() > 1) {
+					// 2D or 3D fix
+
 					totalNoOfFixes++;
 				}
-				
+				gsaCount++;
+
 			}
-			
-			avgNoOfFixesReachable = totalNoOfFixes / gsaCount;
-			
+			if (gsaCount > 0) {
+				avgNoOfFixesReachable = totalNoOfFixes / gsaCount;
+			}
+
 		}
 
-		PACKET packet = new PACKET(DateTimeUtil.nowUTCString(), normalizedLon, normalizedLat, fixQuality,
-				avgNoOfSvsPerReading, avgNoOfFixesReachable);
+		PACKET packet = new PACKET(DateTimeUtil.nowUTCString(), normalizedLon,
+				normalizedLat, fixQuality, avgNoOfSvsPerReading,
+				avgNoOfFixesReachable);
 
 		return packet;
 	}
@@ -151,7 +152,5 @@ public class GPSDataProcessor {
 		return Double.parseDouble(degrees);
 
 	}
-	
-
 
 }

@@ -20,12 +20,12 @@ public class PACKET implements GPSObject{
 	private String normalizedLon;
 	private String normalizedlat;
 	private String fixQuality;
-	private int avgNoOfSvsPerReading;
-	private int avgNoOfFixesReachable;
+	private double avgNoOfSvsPerReading;
+	private double avgNoOfFixesReachable;
 	
 	
 	public PACKET(String utcTimestamp,String normalizedLon, String normalizedlat,
-			String fixQuality, int avgNoOfSvsPerReading, int avgNoOfFixesReachable) {
+			String fixQuality, double avgNoOfSvsPerReading, double avgNoOfFixesReachable) {
 		super();
 		this.utcTimestamp = utcTimestamp;
 		this.normalizedLon = normalizedLon;
@@ -45,10 +45,10 @@ public class PACKET implements GPSObject{
 	public String getFixQuality() {
 		return fixQuality;
 	}
-	public int getAvgNoOfSvsPerReading() {
+	public double getAvgNoOfSvsPerReading() {
 		return avgNoOfSvsPerReading;
 	}
-	public int getAvgNoOfFixesReachable() {
+	public double getAvgNoOfFixesReachable() {
 		return avgNoOfFixesReachable;
 	}
 	public String getUtcTimestamp() {

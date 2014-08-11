@@ -43,22 +43,28 @@ public class Observer2 implements Observer {
 
 					if (!pkt.getNormalizedLon().equalsIgnoreCase(
 							GPSDataProcessor.DEFAULT_NORMALIZED_LON)) {
-						lon = pkt.getNormalizedLon();
+						lon = pkt.getNormalizedLon().substring(0, 10);
 					}
 
 					if (!pkt.getNormalizedlat().equalsIgnoreCase(
 							GPSDataProcessor.DEFAULT_NORMALIZED_LAT)) {
-						lat = pkt.getNormalizedlat();
+						lat = pkt.getNormalizedlat().substring(0, 10);
 					}
 
-					int noOfSvs = pkt.getAvgNoOfSvsPerReading();
-					int noOfFixes = pkt.getAvgNoOfFixesReachable();
+					double noOfSvs = pkt.getAvgNoOfSvsPerReading();
+					double noOfFixes = pkt.getAvgNoOfFixesReachable();
 
+					/*System.out.print("lat" + lat + "\n");
+					System.out.print("lon" + lon + "\n");
+					System.out.print("noOfSvs" + noOfSvs + "\n");
+					System.out.print("noOfFixes" + noOfFixes + "\n");*/
+					
+					
 					Object[] formatterArg = new Object[] { timeStamp, lat, lon,
 							noOfSvs, noOfFixes };
 
 					System.out.printf(
-							"%1$s      %2$s      %3$s                 %4$s                                    %5$s\n",
+							"%1$s      %2$s   %3$s    %4$3f            %5$3f\n",
 							formatterArg);
 
 				}
