@@ -31,7 +31,7 @@ public class GSA implements GPSObject, GPSDataIntegrity {
 	private List<String> prns = new ArrayList<String>(); // PRNs of satellites
 															// used for fix
 															// (space for 12)
-	private float pdop = Float.NaN; // PDOP (dilution of precision)
+	private float pdop = Float.NaN; // PDOP (position dilution of precision)
 	private float hdop = Float.NaN; // Horizontal dilution of precision (HDOP)
 	private float vdop = Float.NaN; // Vertical dilution of precision (VDOP)
 

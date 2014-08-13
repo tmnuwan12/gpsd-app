@@ -18,12 +18,12 @@ import com.dev.tc.gps.client.types.GGA;
  * @date 14-July-2014
  * 
  */
-public class GGAParser extends NMEA0183Parser implements Map {
+public class GGAMap extends NMEA0183Parser implements Map {
 
 	// private static final String GGA_ANNOTATION_REGX = "\\$GPGGA.*";
 	private static final String GGA_ANNOTATION_REGX = "$GPGGA";
 
-	private static final Logger log = Logger.getLogger(GGAParser.class
+	private static final Logger log = Logger.getLogger(GGAMap.class
 			.getName());
 
 	/*
@@ -43,10 +43,10 @@ public class GGAParser extends NMEA0183Parser implements Map {
 	 */
 	@Override
 	public GPSObject map(Deque<String> rawData) {
-
-		GGA gga = new GGA();
+		GGA gga = null;
 		short criticalCount = 7, index = 1;
 		if (rawData != null && !rawData.isEmpty()) {
+			gga = new GGA();
 
 			// check all required major 7 data elements are set.
 			if (rawData.size() >= criticalCount) {
@@ -107,6 +107,8 @@ public class GGAParser extends NMEA0183Parser implements Map {
 						"critcal data count is not met, minimum required 7, but received "
 								+ rawData.size());
 			}
+			
+			return gga;
 
 		}
 		return gga;

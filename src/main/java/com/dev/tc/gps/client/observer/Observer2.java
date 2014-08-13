@@ -52,8 +52,9 @@ public class Observer2 implements Observer {
 					}
 
 					double noOfSvs = pkt.getAvgNoOfSvsPerReading();
-					double noOfFixes = pkt.getAvgNoOfFixesReachable();
-
+					String fixedStatus = pkt.getSuccessfulFixPercentage() > 0.9 ? "Fixed" : "Not Fixed";
+					double accuracy = pkt.getAccuracy() == 0 ? Double.POSITIVE_INFINITY : pkt.getAccuracy();
+					
 					/*System.out.print("lat" + lat + "\n");
 					System.out.print("lon" + lon + "\n");
 					System.out.print("noOfSvs" + noOfSvs + "\n");
@@ -61,10 +62,10 @@ public class Observer2 implements Observer {
 					
 					
 					Object[] formatterArg = new Object[] { timeStamp, lat, lon,
-							noOfSvs, noOfFixes };
+							noOfSvs, fixedStatus, accuracy };
 
 					System.out.printf(
-							"%1$s      %2$s   %3$s    %4$3f            %5$3f\n",
+							"%1$s %2$15s %3$15s %4$15.3f %5$20s %6$15.3f\n",
 							formatterArg);
 
 				}

@@ -10,6 +10,6 @@ package com.dev.tc.gps.client.notification;
  */
 public class DelayMaker {
 
-	public static int BROADCAST_DELAY = 3000;
+	public static int BROADCAST_DELAY = 30000;
 	
 }

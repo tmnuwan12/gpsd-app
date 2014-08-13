@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dev.tc.gps.windows.native_.client;
+package com.dev.tc.gps.log;
 
 import java.util.logging.Filter;
 import java.util.logging.Level;

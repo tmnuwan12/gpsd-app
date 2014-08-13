@@ -4,10 +4,13 @@
 package com.dev.tc.gps.client.parser;
 
 import java.util.Deque;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.dev.tc.gps.client.contract.GPSObject;
 import com.dev.tc.gps.client.contract.Map;
 import com.dev.tc.gps.client.types.GSA;
+import com.dev.tc.gps.windows.native_.client.SerialPortReader;
 
 /**
  * GSA parser
@@ -16,8 +19,11 @@ import com.dev.tc.gps.client.types.GSA;
  * @date 14-July-2014
  * 
  */
-public class GSAParser extends NMEA0183Parser implements Map {
+public class GSAMap extends NMEA0183Parser implements Map {
 
+	private static final Logger log = Logger.getLogger(SerialPortReader.class
+			.getName());
+	
 	private static final String GGA_ANNOTATION_REGX = "$GPGSA";
 
 	/*
@@ -32,9 +38,10 @@ public class GSAParser extends NMEA0183Parser implements Map {
 
 	@Override
 	public GPSObject map(Deque<String> rawData) {
-		GSA gsa = new GSA();
+		GSA gsa = null;
 		short index = 1;
 		if (rawData != null && !rawData.isEmpty()) {
+			gsa = new GSA();
 
 			while (!rawData.isEmpty()) {
 				
@@ -93,6 +100,12 @@ public class GSAParser extends NMEA0183Parser implements Map {
 				}
 				index++;
 			}
+			
+			//debug
+			if(gsa.getFixVal() > 1){
+				log.log(Level.FINER, gsa.toString());
+			}
+			return gsa;
 
 		}
 

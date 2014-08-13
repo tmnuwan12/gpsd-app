@@ -30,6 +30,10 @@ public class GPSDataProcessor {
 	public static final String DEFAULT_NORMALIZED_LAT = "Unknown";
 	public static final String DEAULT_FIXED_QUALITY = "Unknown";
 
+	public static final double STANDARD_DEVIATION_OF_USER_EQUILALENT_RANGE_ERR = Math
+			.sqrt(Math.pow(3, 2) + Math.pow(5, 2) + Math.pow(2.5, 2)
+					+ Math.pow(2, 2) + Math.pow(1, 2) + Math.pow(0.5, 2));
+
 	/**
 	 * @param ggaBuff
 	 * @param gsaBuff
@@ -47,7 +51,8 @@ public class GPSDataProcessor {
 		// period between broadcasted packets
 		String fixQuality = DEAULT_FIXED_QUALITY;
 		double avgNoOfSvsPerReading = 0;
-		double avgNoOfFixesReachable = 0;
+		double successfulFixPercentage = 0;
+		double accuracy = 0.0;
 
 		if (!ggaBuff.isEmpty()) {
 
@@ -104,7 +109,8 @@ public class GPSDataProcessor {
 
 		if (!gsaBuff.isEmpty()) {
 
-			int totalNoOfFixes = 0;
+			int totalNoOfSuccessfulFixes = 0;
+			double totalPdop = 0;
 			int gsaCount = 0;
 
 			for (GSA gsa : gsaBuff) {
@@ -112,20 +118,22 @@ public class GPSDataProcessor {
 				if (gsa.getFixVal() > 1) {
 					// 2D or 3D fix
 
-					totalNoOfFixes++;
+					totalNoOfSuccessfulFixes++;
 				}
+				totalPdop += gsa.getPdop();
 				gsaCount++;
 
 			}
 			if (gsaCount > 0) {
-				avgNoOfFixesReachable = totalNoOfFixes / gsaCount;
+				successfulFixPercentage = totalNoOfSuccessfulFixes / gsaCount;
+				accuracy = calculateAccuracy(totalPdop / gsaCount);
 			}
 
 		}
 
 		PACKET packet = new PACKET(DateTimeUtil.nowUTCString(), normalizedLon,
 				normalizedLat, fixQuality, avgNoOfSvsPerReading,
-				avgNoOfFixesReachable);
+				successfulFixPercentage, accuracy);
 
 		return packet;
 	}
@@ -150,6 +158,26 @@ public class GPSDataProcessor {
 		int decimalPointIndex = rawLocation.indexOf('.');
 		String degrees = rawLocation.substring(0, decimalPointIndex - 2);
 		return Double.parseDouble(degrees);
+
+	}
+
+	/**
+	 * Calculate the standard deviation of error in receiver position using
+	 * following algorithm. http://en.wikipedia.org/wiki/
+	 * Error_analysis_for_the_Global_Positioning_System
+	 * 
+	 * @param pdop
+	 *            - average pdop
+	 * @return - Accuracy in meters.
+	 */
+	private static double calculateAccuracy(double pdop) {
+
+		double standardDeviationOfError = Math.sqrt(Math.pow(pdop, 2)
+				+ Math.pow(
+						(STANDARD_DEVIATION_OF_USER_EQUILALENT_RANGE_ERR / 3),
+						2) + Math.pow(1, 2));
+
+		return standardDeviationOfError;
 
 	}
 

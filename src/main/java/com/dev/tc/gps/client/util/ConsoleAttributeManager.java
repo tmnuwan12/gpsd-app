@@ -25,10 +25,11 @@ public class ConsoleAttributeManager {
 					"Average Number of Fixes Reachable");
 			PRINT_HEADER = true;*/
 			
-			System.out.printf("%1$s                 %2$s     %3$s    %4$s      %5$s\n",
+			System.out.printf("%1$8s %2$22s %3$15s %4$20s %5$15s %6$15s\n",
 					"Time", "Latitude", "Longitude",
 					"AvgSVs/Reading",
-					"AvgFixesRechable/Reading");
+					"Fixed Status",
+					"Accuracy(m)");
 			PRINT_HEADER = true;
 		}
 	}

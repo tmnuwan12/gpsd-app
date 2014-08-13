@@ -31,11 +31,11 @@ public class NMEA0183 implements Protocol {
 
 	public NMEA0183() {
 
-		MAPS.add(new GGAParser());
-		MAPS.add(new GSAParser());
+		MAPS.add(new GGAMap());
+		MAPS.add(new GSAMap());
 		MAPS.add(new GPSDCMDParser());
-		MAPS.add(new GSVParser());
-		MAPS.add(new RMCParser());
+		MAPS.add(new GSVMap());
+		MAPS.add(new RMCMap());
 		// TODO: Add any required parsers
 		
 	}
@@ -51,6 +51,7 @@ public class NMEA0183 implements Protocol {
 		GPSSession gpsSession = getSession();
 
 		for (Map map_ : MAPS) {
+			//log.log(Level.FINEST, "nmea line {0}", line);
 			gpsSession.push(map_.map(map_.parseSentence(line)));
 		}
 

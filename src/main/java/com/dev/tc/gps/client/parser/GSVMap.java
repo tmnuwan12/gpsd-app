@@ -7,9 +7,11 @@ import java.util.Deque;
 
 import com.dev.tc.gps.client.contract.GPSObject;
 import com.dev.tc.gps.client.contract.Map;
+import com.dev.tc.gps.client.notification.DelayMaker;
 import com.dev.tc.gps.client.types.GSV;
 import com.dev.tc.gps.client.types.GSV.GSVSentence;
 import com.dev.tc.gps.client.types.GSV.SpaceVehicle;
+import com.dev.tc.gps.client.util.DateTimeUtil;
 
 /**
  * Parser for GSV annotation.
@@ -17,7 +19,7 @@ import com.dev.tc.gps.client.types.GSV.SpaceVehicle;
  * @author NThusitha
  * 
  */
-public class GSVParser extends NMEA0183Parser implements Map {
+public class GSVMap extends NMEA0183Parser implements Map {
 
 	private static final String GSV_ANNOTATION_REGX = "$GPGSV";
 	private static GSV GLOBAL_GSV = new GSV();
@@ -37,14 +39,15 @@ public class GSVParser extends NMEA0183Parser implements Map {
 		//synchronized (this) {
 
 			GSV gsv = null;
-			if (isGSVExpectingAnotherSentence()) {
-				gsv = GLOBAL_GSV;
-			} else {
-				gsv = new GSV();
-				// GLOBAL_GSV = gsv;
-			}
 			short index = 1;
 			if (rawData != null && !rawData.isEmpty()) {
+				
+				if (isGSVExpectingAnotherSentence()) {
+					gsv = GLOBAL_GSV;
+				} else {
+					gsv = new GSV();
+					// GLOBAL_GSV = gsv;
+				}
 
 				GSVSentence sentence = new GSVSentence();
 				SpaceVehicle sv1 = new SpaceVehicle();
@@ -145,14 +148,14 @@ public class GSVParser extends NMEA0183Parser implements Map {
 				}
 
 				gsv.addSentence(sentence);
-				TIMESTAMP = System.currentTimeMillis();
+				TIMESTAMP = DateTimeUtil.nowUTC();
 				GLOBAL_GSV = gsv;
 
 			}
 
 		//}
 
-		return GLOBAL_GSV;
+		return gsv;
 	}
 
 
@@ -166,11 +169,11 @@ public class GSVParser extends NMEA0183Parser implements Map {
 	 */
 	private boolean isGSVExpectingAnotherSentence() {
 		
-		long now = System.currentTimeMillis();
+		long now = DateTimeUtil.nowUTC();
 		boolean hasNext = false;
-		if(now - TIMESTAMP > MAX_WAIT_TIME){
+		if(now - TIMESTAMP > DelayMaker.BROADCAST_DELAY){
 			hasNext = false;
-		}else if(GLOBAL_GSV.getNoOfSentencesForFullData() > GLOBAL_GSV
+		}else if(GLOBAL_GSV != null && GLOBAL_GSV.getNoOfSentencesForFullData() > GLOBAL_GSV
 				.getSentences().size()){
 			hasNext = true;
 		}

@@ -3,11 +3,14 @@
  */
 package com.dev.tc.gps.windows.native_.client;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.TooManyListenersException;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import sun.security.action.GetLongAction;
@@ -133,6 +136,30 @@ public class SerialPortReader extends Thread {
 
 		}
 	}
+	
+	
+	public void configLogs(){
+		
+		LogManager logManager = LogManager.getLogManager();
+
+		// logManager.readConfiguration(new
+		// FileInputStream(C:\sandbox\ethicalsourcing\gps-reader\src\main\resources\log\log.config"));
+		try {
+			logManager
+					.readConfiguration(new FileInputStream(
+							"C:\\sandbox\\ethicalsourcing\\gps-reader\\src\\main\\resources\\log\\log.config"));
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 
 	// TODO: Add ownership change event listeners.
 
@@ -172,6 +199,8 @@ public class SerialPortReader extends Thread {
 		SerialPortReader reader = new SerialPortReader();
 		// Logger.getLogger("com.dev.tc.gps.windows.native_.client").setFilter(new
 		// LogFilter());
+		//reader.configLogs();
+		
 		log.log(Level.INFO, "start listening for gps data");
 		//System.out.printf("%1$s      %2$s      %3$s      %4$s      %5$s\n", "Time", "Latitude", "Longitude", "Average Number of SVs per Reading", "Average Number of Fixes Reachable");
 		if (args != null && args.length > 0) {

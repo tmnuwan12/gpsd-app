@@ -16,7 +16,7 @@ import com.dev.tc.gps.client.types.RMC;
  * @date 17-July-2014
  *
  */
-public class RMCParser extends NMEA0183Parser implements Map {
+public class RMCMap extends NMEA0183Parser implements Map {
 
 	
 	private static final String RMC_ANNOTATION_REGX = "$GPRMC";
@@ -27,9 +27,9 @@ public class RMCParser extends NMEA0183Parser implements Map {
 	@Override
 	public GPSObject map(Deque<String> rawData) {
 	
-		RMC rmc = new RMC();
 		short index = 1;
 		if(rawData != null && !rawData.isEmpty()){
+			RMC rmc = new RMC();
 			
 			while(!rawData.isEmpty()){
 				
@@ -88,8 +88,9 @@ public class RMCParser extends NMEA0183Parser implements Map {
 				index++;
 				
 			}
+			return rmc;
 		}
-		return rmc;
+		return null;
 	}
 
 	/* (non-Javadoc)
